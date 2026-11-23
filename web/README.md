@@ -32,7 +32,8 @@ is static HTML.
 ## SEO, GEO and AEO
 
 - **Pages:** a home page plus a landing page per site (YouTube, Instagram, TikTok, Facebook, X,
-  Vimeo, Reddit), each with a direct "quick answer", steps, notes and its own FAQ, plus an
+  Vimeo, Reddit), an 18+ section under `/adult` (Pornhub, XVideos, XNXX, RedTube) labelled with
+  `<meta name="rating" content="adult">` so SafeSearch filters only those pages, each with a direct "quick answer", steps, notes and its own FAQ, plus an
   extension page, privacy and terms. All copy lives in `src/lib/content.ts`.
 - **Structured data** (JSON-LD): WebSite, Person, WebApplication, HowTo, FAQPage, BreadcrumbList,
   and SoftwareApplication for the extension. It's generated from the same copy people see, so it never
@@ -50,7 +51,7 @@ is static HTML.
 
 ## Run locally
 
-Needs Node 20+, yt-dlp (with `yt-dlp[default]` for YouTube) and ffmpeg on the PATH.
+Needs Node 20+, yt-dlp and ffmpeg on the PATH. Install yt-dlp as `pip install "yt-dlp[default,curl-cffi]"`: `default` adds YouTube's challenge solver, and `curl-cffi` lets yt-dlp look like a real browser, which sites such as Pornhub require (without it they answer HTTP 410).
 
 ```powershell
 npm install
@@ -76,6 +77,8 @@ docker run -d -p 3060:3060 -e TOKEN_SECRET=$(openssl rand -hex 32) --restart unl
 | `TOKEN_SECRET` | run | Signs download tokens. Set it so tokens survive restarts and work across instances. |
 | `MAX_JOBS` | run | Simultaneous downloads (default 4). |
 | `YTDLP_PATH`, `FFMPEG_DIR` | run | Only if they aren't on the PATH. |
+| `MAX_HEIGHT` | run | Highest quality the site prepares (default 1080). |
+| `YTDLP_COOKIES` | run | Optional path to a `cookies.txt` from a **dedicated** 18+ account. It unlocks sign-in-only age-restricted videos (e.g. on YouTube). The site may flag or ban that account, so never use your personal one. |
 
 **After deploying:**
 1. Put it behind HTTPS. The host or a reverse proxy must set `X-Forwarded-For`, so rate limits apply per

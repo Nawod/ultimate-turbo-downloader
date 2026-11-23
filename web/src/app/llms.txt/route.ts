@@ -1,5 +1,5 @@
 // /llms.txt — a plain-text summary for AI assistants and answer engines (GEO), per llmstxt.org.
-import { EXTENSION_FEATURES, GENERAL_FAQ, PLATFORMS } from '@/lib/content';
+import { ADULT_HUB, ADULT_PLATFORMS, EXTENSION_FEATURES, GENERAL_FAQ, PLATFORMS } from '@/lib/content';
 import { SITE, abs } from '@/lib/site';
 
 export const dynamic = 'force-static';
@@ -17,13 +17,18 @@ Made by ${SITE.author.name} (${SITE.author.url}). Source code (MIT): ${SITE.repo
 ## Key facts
 - Website: free, works in any browser incl. phones; MP4 up to ${f.webMaxQuality} (HD qualities are merged from separate video and audio streams on the server, then deleted right after download), plus the audio track.
 - Browser extension (Chrome, Edge, Brave on Windows): up to ${f.connections} connections per download; ${f.speedup} faster than one connection in the author's test (${f.speedNote}); 1080p/4K/8K; pause & resume; download button on every video; image grabber; works with the user's own login for Stories and private groups.
-- Not supported: DRM-protected services (e.g. Netflix, Spotify), password-protected or private videos (website).
+- Also works with adult (18+) sites such as Pornhub, XVideos, XNXX and RedTube, up to 1080p, privately (no logs, nothing stored).
+- Not supported: DRM-protected services (e.g. Netflix, Spotify). Private, members-only and sign-in-only age-restricted videos need the browser extension (it uses the user's own login).
 - Get the extension: ${SITE.extensionUrl}
 
 ## Downloaders
 - [Online video downloader](${abs('/')}): paste any supported link
 ${PLATFORMS.map((p) => `- [${p.h1}](${abs('/' + p.slug)}): ${p.answer}`).join('\n')}
 - [Browser extension](${abs('/browser-extension')}): ${EXTENSION_FEATURES.map((x) => x.t).join('; ')}
+
+## Adult / NSFW sites (18+)
+- [NSFW & adult video downloader](${abs('/adult')}): ${ADULT_HUB.answer}
+${ADULT_PLATFORMS.map((p) => `- [${p.h1}](${abs('/adult/' + p.slug)}): ${p.answer}`).join('\n')}
 
 ## FAQ
 ${GENERAL_FAQ.map((x) => `### ${x.q}\n${x.a}`).join('\n\n')}

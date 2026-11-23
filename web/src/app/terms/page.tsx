@@ -13,6 +13,8 @@ export default function Terms() {
       <h1 className="h1 h1-sm">Terms &amp; copyright</h1>
       <h2>Use it responsibly</h2>
       <p>Ultimate Turbo Downloader is a tool. You are responsible for what you download with it. Download only content you have the right to: your own videos, public-domain or Creative Commons works, or content whose owner or platform allows downloading. Respect copyright and each website’s terms of service.</p>
+      <h2>Adult content</h2>
+      <p>The downloader works with adult (18+) sites. You must be an adult where you live to use it for that. Never download, keep or share content made or published without the consent of the people in it, or any content involving minors. Report such content to the site hosting it and, where it applies, to the authorities.</p>
       <h2>What isn’t supported</h2>
       <p>The service does not bypass DRM, paywalls, passwords or private-account protections, and it doesn’t download private videos. Abuse (automated scraping, overloading the service) is rate-limited and may be blocked.</p>
       <h2>No warranty</h2>

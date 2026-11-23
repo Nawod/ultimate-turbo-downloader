@@ -1,7 +1,7 @@
 // Server-rendered page sections: steps, extension promo, FAQ, site links.
 import Link from 'next/link';
 import { SITE } from '@/lib/site';
-import { EXTENSION_FEATURES, PLATFORMS, QA, STEPS } from '@/lib/content';
+import { EXTENSION_FEATURES, PLATFORMS, ADULT_PLATFORMS, QA, STEPS } from '@/lib/content';
 
 export function Steps({ title = 'How to download a video' }: { title?: string }) {
   return (
@@ -86,15 +86,18 @@ export function Faq({ items, title = 'Questions & answers' }: { items: QA[]; tit
   );
 }
 
-export function SiteLinks({ current }: { current?: string }) {
+export function SiteLinks({ current, adult = false }: { current?: string; adult?: boolean }) {
+  const list = adult ? ADULT_PLATFORMS : PLATFORMS;
+  const base = adult ? '/adult' : '';
   return (
     <section className="sec wrap" aria-labelledby="sites-h">
-      <p className="mono-label">Downloaders</p>
-      <h2 id="sites-h" className="h2">Works with the sites you use</h2>
+      <p className="mono-label">{adult ? 'Adult sites (18+)' : 'Downloaders'}</p>
+      <h2 id="sites-h" className="h2">{adult ? 'Works with these adult sites' : 'Works with the sites you use'}</h2>
       <ul className="sites">
-        {PLATFORMS.filter((p) => p.slug !== current).map((p) => (
-          <li key={p.slug}><Link href={`/${p.slug}`}><b>{p.name}</b><span>{p.h1} →</span></Link></li>
+        {list.filter((p) => p.slug !== current).map((p) => (
+          <li key={p.slug}><Link href={`${base}/${p.slug}`}><b>{p.name}</b><span>{p.h1} →</span></Link></li>
         ))}
+        {adult && current && <li><Link href="/adult"><b>All adult sites</b><span>NSFW video downloader →</span></Link></li>}
         <li><span className="sites-more"><b>{SITE.facts.sites}</b><span>more sites via yt-dlp</span></span></li>
       </ul>
     </section>

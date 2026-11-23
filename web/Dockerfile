@@ -15,7 +15,7 @@ FROM node:22-bookworm-slim AS run
 # yt-dlp (with its YouTube JS-challenge solver) and ffmpeg
 RUN apt-get update \
  && apt-get install -y --no-install-recommends python3 python3-pip ffmpeg ca-certificates \
- && pip3 install --no-cache-dir --break-system-packages "yt-dlp[default]" \
+ && pip3 install --no-cache-dir --break-system-packages "yt-dlp[default,curl-cffi]" \
  && apt-get purge -y python3-pip && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=3060 HOSTNAME=0.0.0.0 MAX_JOBS=4

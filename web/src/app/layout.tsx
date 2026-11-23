@@ -65,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <nav aria-label="More" className="foot-col">
               <p className="mono-label">More</p>
               <Link href="/browser-extension">Browser extension</Link>
+              <Link href="/adult">NSFW downloader (18+)</Link>
               <Link href="/privacy">Privacy</Link>
               <Link href="/terms">Terms &amp; copyright</Link>
               <a href={abs('/llms.txt')}>llms.txt</a>

@@ -119,6 +119,67 @@ export const PLATFORMS: Platform[] = [
   },
 ];
 
+// ---- 18+ section (/adult/…) ----
+// Kept in its own folder and labelled <meta name="rating" content="adult">, as Google recommends, so the
+// rest of the site stays in normal (SafeSearch) results. Copy is deliberately neutral: no explicit words.
+const adultCommon = (name: string): QA[] => [
+  { q: `Is the ${name} downloader free and private?`, a: 'Yes. No sign-up, no watermark and no history: nothing about what you download is logged, and files are never kept on our server.' },
+  { q: `Can I download ${name} videos in HD?`, a: `Yes, up to ${F.webMaxQuality} when the site offers it. Pick the quality on the result card; the download starts straight away.` },
+  { q: 'Why does a video say it needs a login?', a: 'Premium, private or members-only videos are only shown to signed-in members. The free browser extension downloads them with your own login, as you can already watch them.' },
+];
+
+export const ADULT_PLATFORMS: Platform[] = [
+  {
+    slug: 'pornhub-video-downloader', name: 'Pornhub', h1: 'Pornhub Video Downloader',
+    title: 'Pornhub Video Downloader – Free, Private, up to 1080p (18+)',
+    description: 'Download Pornhub videos as MP4 up to 1080p, free and private: no sign-up, no history, nothing stored. Paste the video link and pick a quality. 18+ only.',
+    answer: 'To download a Pornhub video, copy the address of the video page (it contains view_video.php?viewkey=), paste it into the box above and press Get video, then choose a quality up to 1080p. It is free, needs no account, and nothing about your download is logged or stored.',
+    example: 'https://www.pornhub.com/view_video.php?viewkey=…',
+    notes: ['Public videos work on the website, in 240p to 1080p MP4.', 'Premium and private videos: use the browser extension with your own login.'],
+    faq: adultCommon('Pornhub'),
+  },
+  {
+    slug: 'xvideos-downloader', name: 'XVideos', h1: 'XVideos Downloader',
+    title: 'XVideos Downloader – Save XVideos as MP4, Free (18+)',
+    description: 'Download XVideos videos as MP4 up to 1080p, free and private: no sign-up, no history, nothing stored. Paste the video link and pick a quality. 18+ only.',
+    answer: 'To download an XVideos video, copy the address of the video page (it contains /video), paste it into the box above and press Get video, then choose a quality up to 1080p. It is free, needs no account, and nothing about your download is logged or stored.',
+    example: 'https://www.xvideos.com/video…/…',
+    notes: ['Public videos download as one MP4 file, 250p to 1080p.'],
+    faq: adultCommon('XVideos'),
+  },
+  {
+    slug: 'xnxx-video-downloader', name: 'XNXX', h1: 'XNXX Video Downloader',
+    title: 'XNXX Video Downloader – Free MP4 up to 1080p (18+)',
+    description: 'Download XNXX videos as MP4 up to 1080p, free and private: no sign-up, no history, nothing stored. Paste the video link and pick a quality. 18+ only.',
+    answer: 'To download an XNXX video, copy the address of the video page (it contains /video-), paste it into the box above and press Get video, then choose a quality up to 1080p. It is free, needs no account, and nothing about your download is logged or stored.',
+    example: 'https://www.xnxx.com/video-…/…',
+    notes: ['Public videos download as one MP4 file, 250p to 1080p.'],
+    faq: adultCommon('XNXX'),
+  },
+  {
+    slug: 'redtube-video-downloader', name: 'RedTube', h1: 'RedTube Video Downloader',
+    title: 'RedTube Video Downloader – Free MP4 up to 1080p (18+)',
+    description: 'Download RedTube videos as MP4 up to 1080p, free and private: no sign-up, no history, nothing stored. Paste the video link and pick a quality. 18+ only.',
+    answer: 'To download a RedTube video, copy the address of the video page (redtube.com/ followed by a number), paste it into the box above and press Get video, then choose a quality up to 1080p. It is free, needs no account, and nothing about your download is logged or stored.',
+    example: 'https://www.redtube.com/12345678',
+    notes: ['Public videos download as one MP4 file, 240p to 1080p.'],
+    faq: adultCommon('RedTube'),
+  },
+];
+
+export const ADULT_HUB = {
+  title: 'NSFW & Adult Video Downloader – Free, Private (18+)',
+  h1: 'NSFW & adult video downloader',
+  description: 'Download NSFW and adult videos from Pornhub, XVideos, XNXX, RedTube and more as MP4 up to 1080p. Free, private, nothing stored. 18+ only.',
+  answer: 'Paste the link of any public video page from an adult site into the box above and press Get video, then pick a quality up to 1080p. It is free and private: no account, no history, and files are never kept on our server. Age-restricted and members-only videos that need a login download with the free browser extension, using your own account.',
+  faq: [
+    { q: 'Can I download age-restricted videos?', a: 'Yes. Public adult sites work straight from the website. Some sites (YouTube, for example) only show age-restricted videos to signed-in adults; the free browser extension downloads those with your own login.' },
+    { q: 'Is it private?', a: 'Yes. There are no accounts, no history and no analytics cookies, and files are never kept on our server. Your browser’s own download list is the only record, so use a private window if you prefer.' },
+    { q: 'Which adult sites work?', a: `Pornhub, XVideos, XNXX and RedTube are tested, and many others are supported among the ${F.sites} sites the downloader understands. If a link doesn’t work on the website, the browser extension usually can.` },
+    { q: 'Who can use this?', a: 'Adults only (18+). Only download content you are allowed to keep, and never content shared without the consent of the people in it. Report such content to the site it is on.' },
+  ] as QA[],
+};
+
 export const EXTENSION_FEATURES = [
   { t: `${F.connections} connections per download`, d: `Splits every file into ${F.connections} parts and downloads them at once. ${F.speedup} faster in our test (${F.speedNote}).` },
   { t: '4K and 8K video', d: 'Merges YouTube’s separate high-quality video and audio streams on your PC, at any resolution.' },
