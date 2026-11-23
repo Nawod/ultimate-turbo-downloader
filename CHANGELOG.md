@@ -2,6 +2,13 @@
 
 All notable changes to Ultimate Turbo Downloader. Versions follow [Semantic Versioning](https://semver.org/).
 
+## 1.4.1 — 2026-11-23
+
+### Fixed
+- Downloads whose name comes from the server (`Content-Disposition`, e.g. `…/download?id=…`) were saved as
+  `download` with no extension. The extension now waits for the browser to learn the real name and, if it
+  can't, asks the server for it before handing the download to aria2.
+
 ## 1.4.0 — 2026-11-23
 
 ### Changed

@@ -13,11 +13,13 @@ export type JobState = 'running' | 'ready' | 'error';
 type Job = {
   id: string; dir: string; name: string; state: JobState; pct: number; error?: string;
   file?: string; size?: number; created: number; finished?: number; kill?: () => void;
+  served: number; active: number; doneAt?: number; // bytes sent across all requests, open streams
 };
 
 const ROOT = path.join(/*turbopackIgnore: true*/ os.tmpdir(), 'utd-web');
 const MAX_AGE = 20 * 60 * 1000;       // any job folder older than this is deleted
 const READY_TTL = 10 * 60 * 1000;     // a finished file waits this long for its download
+const GRACE = 60 * 1000;              // after the whole file was sent, keep it this long (retries, split downloads)
 const RUN_LIMIT = 15 * 60 * 1000;     // hard cap on preparing
 
 // One shared registry per process (route bundles may each load this module).
@@ -31,13 +33,15 @@ if (first) try { fs.rmSync(/*turbopackIgnore: true*/ ROOT, { recursive: true, fo
 function remove(job: Job) {
   job.kill?.();
   jobs.delete(job.id);
-  fs.rm(/*turbopackIgnore: true*/ job.dir, { recursive: true, force: true }, () => {});
+  fs.rm(/*turbopackIgnore: true*/ job.dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 500 }, () => {});
 }
 
 if (first) setInterval(() => {
   const now = Date.now();
   for (const j of jobs.values()) {
-    if (now - j.created > MAX_AGE || (j.finished && now - j.finished > READY_TTL)) remove(j);
+    if (now - j.created > MAX_AGE + (j.active ? 30 * 60 * 1000 : 0)) remove(j); // a slow download may finish
+    else if (!j.active && j.doneAt && now - j.doneAt > GRACE) remove(j);
+    else if (!j.active && j.finished && !j.doneAt && now - j.finished > READY_TTL) remove(j);
   }
 }, 60 * 1000).unref?.();
 
@@ -46,7 +50,7 @@ export function startJob(url: string, height: number, name: string): string {
   const id = randomBytes(18).toString('base64url');
   const dir = path.join(/*turbopackIgnore: true*/ ROOT, id);
   fs.mkdirSync(/*turbopackIgnore: true*/ dir, { recursive: true });
-  const job: Job = { id, dir, name, state: 'running', pct: 0, created: Date.now() };
+  const job: Job = { id, dir, name, state: 'running', pct: 0, created: Date.now(), served: 0, active: 0 };
   jobs.set(id, job);
 
   const child = spawnMerge(url, height, dir);
@@ -102,11 +106,26 @@ export function jobStatus(id: string) {
   return { state: j.state, pct: Math.round(j.pct * 1000) / 10, error: j.error, size: j.size };
 }
 
-/** The finished file, once. The caller deletes it with finishJob() after sending. */
-export function takeFile(id: string) {
+/**
+ * The finished file. Download managers fetch it in several byte ranges at once, so it isn't deleted
+ * on the first request: once the bytes sent add up to the whole file and no request is still reading,
+ * it's removed after a short grace period (or by the sweep).
+ */
+export function openFile(id: string) {
   const j = jobs.get(id);
   if (!j || j.state !== 'ready' || !j.file) return null;
-  return { path: j.file, size: j.size!, name: j.name, done: () => remove(j) };
+  j.active++;
+  let closed = false;
+  return {
+    path: j.file, size: j.size!, name: j.name,
+    sent(bytes: number) { j.served += bytes; },
+    close() {
+      if (closed) return; closed = true;
+      j.active = Math.max(0, j.active - 1);
+      if (j.served >= j.size! && !j.doneAt) j.doneAt = Date.now();
+      if (!j.active && j.doneAt) setTimeout(() => { if (!j.active && jobs.has(j.id)) remove(j); }, GRACE).unref?.();
+    },
+  };
 }
 
 export function validJobId(id: unknown): id is string {

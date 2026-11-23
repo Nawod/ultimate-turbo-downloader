@@ -53,10 +53,42 @@ function shouldSkip(item, s) {
   return false;
 }
 
+// onCreated fires before the server's reply arrives, so the name from Content-Disposition
+// (e.g. "/api/download?j=…" → "My video (720p).mp4") isn't known yet. Wait briefly for it.
+function waitForFilename(id, ms = 4000) {
+  return new Promise((resolve) => {
+    let t;
+    const done = (name) => { chrome.downloads.onChanged.removeListener(on); clearTimeout(t); resolve(name || ''); };
+    const on = (d) => { if (d.id === id && d.filename && d.filename.current) done(d.filename.current); };
+    chrome.downloads.onChanged.addListener(on);
+    t = setTimeout(() => done(''), ms);
+    chrome.downloads.search({ id }).then(([it]) => { if (it && it.filename) done(it.filename); }).catch(() => {});
+  });
+}
+
+// Last resort: ask the server (HEAD) for its Content-Disposition name, since aria2 would otherwise
+// name the file after the URL path (e.g. "download").
+async function nameFromServer(url) {
+  try {
+    const ctl = new AbortController();
+    const t = setTimeout(() => ctl.abort(), 4000);
+    const r = await fetch(url, { method: 'HEAD', credentials: 'include', signal: ctl.signal });
+    clearTimeout(t);
+    const cd = r.headers.get('content-disposition') || '';
+    const star = /filename\*\s*=\s*(?:UTF-8|utf-8)''([^;]+)/.exec(cd);
+    if (star) return decodeURIComponent(star[1].trim());
+    const plain = /filename\s*=\s*"?([^";]+)"?/.exec(cd);
+    return plain ? plain[1].trim() : '';
+  } catch { return ''; }
+}
+const safeFile = (n) => n.replace(/[\\/:*?"<>|\u0000-\u001f]+/g, '_').trim().slice(0, 200);
+
 // ---- Intercept every new browser download ----
 chrome.downloads.onCreated.addListener(async (item) => {
   const s = await getSettings();
-  if (!s.enabled || shouldSkip(item, s)) return;
+  if (!s.enabled) return;
+  if (!item.filename && item.state === 'in_progress') item = { ...item, filename: await waitForFilename(item.id) };
+  if (shouldSkip(item, s)) return;
   if (!(await isAlive(s))) {
     setBadge('!', '#c0392b', 'aria2 is not running — Chrome is downloading this one itself');
     return; // leave the download with Chrome
@@ -68,7 +100,9 @@ chrome.downloads.onCreated.addListener(async (item) => {
   if (after && after.state === 'complete') return; // tiny file finished before we caught it
 
   try {
-    const gid = await sendToAria2(url, { referrer: item.referrer, filename: baseName(item.filename) }, s);
+    let filename = baseName(item.filename);
+    if (!filename) filename = safeFile(await nameFromServer(url));
+    const gid = await sendToAria2(url, { referrer: item.referrer, filename }, s);
     try { await chrome.downloads.erase({ id: item.id }); } catch {}
     openProgress('aria', gid, s);
     refreshBadge();
