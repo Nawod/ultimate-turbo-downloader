@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="progress.css">
+</head>
+<body class="popup">
+  <header>
+    <div class="brand"><img src="icons/32.png" alt=""> Ultimate Turbo Downloader</div>
+    <label class="switch" title="Catch browser downloads">
+      <input type="checkbox" id="enabled"><span></span>
+    </label>
+  </header>
+
+  <nav class="tabs">
+    <button data-tab="page" class="tab">This page</button>
+    <button data-tab="downloads" class="tab">Downloads <span id="activeCount"></span></button>
+  </nav>
+
+  <div id="status" class="status">Connecting…</div>
+
+  <!-- live progress of the download that was just started -->
+  <section id="now" class="now" hidden></section>
+
+  <!-- This page -->
+  <section id="tab-page" hidden>
+    <div class="pagehost" id="pageHost"></div>
+    <div class="row">
+      <select id="quality"></select>
+      <button id="grabVideo">Download video</button>
+    </div>
+    <button id="grabImages" class="wide ghost-solid">Grab images from this page</button>
+    <h3>Media this page loaded <small>(play the video first if the list is empty)</small></h3>
+    <ul id="sniffed" class="list sniffed"></ul>
+    <p id="sniffEmpty" class="empty small" hidden>Nothing yet. Start playing a video, then reopen this.</p>
+  </section>
+
+  <!-- Downloads -->
+  <section id="tab-downloads" hidden>
+    <form id="addForm" class="add">
+      <input id="addUrl" type="url" placeholder="Paste a file or video page link" required>
+      <select id="addMode" title="How to download">
+        <option value="file">File</option>
+        <option value="video">Video</option>
+      </select>
+      <button type="submit">Add</button>
+    </form>
+    <div class="toolbar">
+      <span id="speed">↓ 0 B/s</span>
+      <span class="spacer"></span>
+      <button id="pauseAll" class="ghost">Pause all</button>
+      <button id="resumeAll" class="ghost">Resume all</button>
+      <button id="clear" class="ghost" title="Removes finished downloads from this list. The files stay in your folder.">Clear list</button>
+    </div>
+    <ul id="list" class="list"></ul>
+    <p id="empty" class="empty" hidden>No downloads yet. Start a download in the browser, or paste a link above.</p>
+  </section>
+
+  <footer><a href="options.html" target="_blank">Settings</a></footer>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

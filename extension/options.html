@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Ultimate Turbo Downloader settings</title>
+<link rel="stylesheet" href="ui.css">
+</head>
+<body class="options">
+  <h1><img src="icons/48.png" alt=""> Ultimate Turbo Downloader settings</h1>
+
+  <form id="form">
+    <label>aria2 RPC address
+      <input id="rpcUrl" type="url" required>
+    </label>
+    <label>RPC secret <small>(copied from <code>helper\secret.txt</code> by setup)</small>
+      <input id="secret" type="password" autocomplete="off">
+    </label>
+    <label>Connections per download <small>(1–16)</small>
+      <input id="connections" type="number" min="1" max="16">
+    </label>
+    <label>Save folder <small>(leave empty to use the folder in aria2.conf)</small>
+      <input id="dir" type="text" placeholder="C:\Users\you\Downloads">
+    </label>
+    <label>Only catch downloads bigger than (MB) <small>(0 = catch everything)</small>
+      <input id="minSizeMB" type="number" min="0">
+    </label>
+    <label>Never catch these file types <small>(comma separated)</small>
+      <input id="skipExt" type="text" placeholder="torrent, ics">
+    </label>
+    <label class="row"><input id="enabled" type="checkbox"> Catch browser downloads</label>
+    <label>When a download starts, show its progress
+      <select id="progressUi">
+        <option value="popup">In the extension popup, under the toolbar icon</option>
+        <option value="window">In a small separate window</option>
+        <option value="off">Don't show it</option>
+      </select>
+    </label>
+    <label class="row"><input id="progressAutoClose" type="checkbox"> Close the progress display when the download finishes</label>
+
+    <h2>Videos (yt-dlp)</h2>
+    <label>Media helper address
+      <input id="mediaUrl" type="url" required>
+    </label>
+    <label>Default video quality
+      <select id="videoQuality"></select>
+    </label>
+    <label class="row"><input id="showOverlay" type="checkbox"> Show a "Download video" button over videos</label>
+
+    <div class="buttons">
+      <button type="submit">Save</button>
+      <button type="button" id="test" class="ghost">Test connection</button>
+      <button type="button" id="update" class="ghost">Update yt-dlp</button>
+    </div>
+    <p id="msg" class="status"></p>
+    <pre id="updateOut" class="out" hidden></pre>
+  </form>
+  <footer class="credit">
+    Ultimate Turbo Downloader <span id="ver"></span> · open source (MIT) ·
+    by <a href="https://www.nawodmadhuwantha.com" target="_blank" rel="noopener">Nawod Madhuwantha</a>
+  </footer>
+  <script type="module" src="options.js"></script>
+</body>
+</html>

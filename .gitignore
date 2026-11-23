@@ -1,0 +1,23 @@
+# Generated per machine by helper/setup.ps1 — contain your secret and local paths
+helper/secret.txt
+helper/aria2.conf
+helper/aria2.session
+helper/media.json
+helper/media-jobs.json
+helper/moved.json
+helper/start-helpers.vbs
+helper/tmp/
+helper/bin/
+
+# Packaging output
+*.zip
+*.crx
+*.pem
+
+# OS / editor
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
+node_modules/

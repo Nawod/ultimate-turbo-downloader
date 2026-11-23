@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Grab images</title>
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="images.css">
+</head>
+<body class="images">
+  <header class="pickbar">
+    <div class="brand"><img src="icons/32.png" alt=""> <span>Grab images</span> <small id="page"></small></div>
+    <div class="controls">
+      <label>Min size
+        <select id="minSize">
+          <option value="0">Any</option>
+          <option value="100">100 px+</option>
+          <option value="300" selected>300 px+</option>
+          <option value="600">600 px+</option>
+          <option value="1000">1000 px+</option>
+        </select>
+      </label>
+      <label>Type
+        <select id="type">
+          <option value="">All</option>
+          <option value="jpg">JPG</option>
+          <option value="png">PNG</option>
+          <option value="webp">WebP</option>
+          <option value="gif">GIF</option>
+          <option value="svg">SVG</option>
+        </select>
+      </label>
+      <button id="rescan" class="ghost">Rescan page</button>
+      <button id="all" class="ghost">Select all</button>
+      <button id="none" class="ghost">Select none</button>
+      <button id="go">Download 0</button>
+    </div>
+  </header>
+  <p id="msg" class="status">Scanning the page…</p>
+  <main id="grid" class="grid"></main>
+  <script type="module" src="images.js"></script>
+</body>
+</html>

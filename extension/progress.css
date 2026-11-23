@@ -1,0 +1,24 @@
+/* Progress card: shared by the popup and the separate progress window. */
+body.progress { padding: 14px 16px 12px; min-width: 0; overflow: hidden; user-select: none; }
+.pcard .top { display: flex; align-items: center; gap: 10px; margin: 0; }
+.pcard .top img { width: 28px; height: 28px; flex: none; }
+.pcard .titles { flex: 1; min-width: 0; }
+.pcard .pname { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pcard .psub { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pcard .pbar { height: 8px; border-radius: 4px; background: var(--track); margin: 14px 0 8px; overflow: hidden; position: relative; }
+.pcard .pbar i { display: block; height: 100%; width: 0; background: var(--accent); }
+.pcard .pbar.indet i { width: 35% !important; animation: pslide 1.2s ease-in-out infinite; }
+@keyframes pslide { from { transform: translateX(-100%); } to { transform: translateX(290%); } }
+.pcard.done .pbar i { background: var(--ok); }
+.pcard.failed .pbar i { background: var(--bad); }
+.pcard .prow { display: flex; align-items: baseline; gap: 10px; font-variant-numeric: tabular-nums; }
+.pcard .pct { font-size: 20px; font-weight: 700; }
+.pcard .pstats { color: var(--muted); font-size: 12px; flex: 1; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pcard .perr { color: var(--bad); font-size: 12px; margin-top: 6px; max-height: 34px; overflow: hidden; }
+.pcard .pactions { display: flex; align-items: center; gap: 4px; margin-top: 12px; }
+.pcard .auto { color: var(--muted); font-size: 12px; display: flex; gap: 6px; align-items: center; }
+.pcard .auto input { accent-color: var(--accent); margin: 0; }
+
+/* inside the toolbar popup */
+.now { border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+.now .pcard .pbar { margin-top: 10px; }
