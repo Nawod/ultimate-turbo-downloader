@@ -19,12 +19,13 @@
 ## Video guide
 
 <p align="center">
-  <a href="docs/setup-guide.mp4"><img src="docs/setup-guide-poster.jpg" width="720" alt="Watch the 90-second setup guide"></a>
+  <a href="docs/setup-guide.mp4"><img src="docs/setup-guide-preview.gif" width="800" alt="Setup guide highlights: run setup, load the extension, catch downloads, download videos, pause and resume"></a>
 </p>
 
-A 90-second, step-by-step walkthrough: get the code, run setup, load the extension, paste the
-secret, then catch downloads, grab videos, pause and resume, and grab images.
-[Watch it (MP4, 5 MB)](docs/setup-guide.mp4).
+Above: highlights. The full 90-second, step-by-step walkthrough covers getting the code,
+running setup, loading the extension and pasting the secret, then catching downloads, grabbing
+videos, pausing and resuming, and grabbing images.
+**[▶ Watch the full setup guide (MP4, 5 MB)](docs/setup-guide.mp4)**
 
 <p align="center">
   <img src="docs/popup-progress.png" width="300" alt="Download progress in the extension popup">
