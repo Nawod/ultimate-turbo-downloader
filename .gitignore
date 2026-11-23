@@ -21,3 +21,9 @@ Desktop.ini
 .vscode/
 .idea/
 node_modules/
+
+# Website build output
+web/.next/
+web/out/
+*.tsbuildinfo
+.env*.local

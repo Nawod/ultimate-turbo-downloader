@@ -1,0 +1,29 @@
+{
+  "name": "ultimate-turbo-downloader-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Online video downloader website for Ultimate Turbo Downloader: paste a link, download the video. Promotes the free browser extension.",
+  "author": "Nawod Madhuwantha (https://www.nawodmadhuwantha.com)",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev -p 3060",
+    "build": "next build",
+    "start": "next start -p 3060",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "next": "^16.4.6",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "~5.9.0"
+  }
+}

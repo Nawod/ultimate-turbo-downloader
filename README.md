@@ -33,6 +33,13 @@ videos, pausing and resuming, and grabbing images.
   <img src="docs/pause-resume.png" width="300" alt="Pause and resume">
 </p>
 
+## Website
+
+There's also an **online version**: paste a video link and download it, with nothing to install,
+on any device including phones. It gives single-file MP4 (usually up to 720p on YouTube) plus audio,
+and points to the extension for 4K and 16-connection speed. The source is in [`web/`](web/), with
+deploy steps (Docker, because it runs yt-dlp on a server) in [web/README.md](web/README.md).
+
 ## Features
 
 - **Faster file downloads.** Every download you start in the browser is handed to
