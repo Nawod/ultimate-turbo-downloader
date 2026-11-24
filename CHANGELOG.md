@@ -2,6 +2,18 @@
 
 All notable changes to Ultimate Turbo Downloader. Versions follow [Semantic Versioning](https://semver.org/).
 
+## 1.4.2 — 2026-11-24
+
+### Added
+- A close button (✕) on the "Download video" button over videos. It hides the button for that video until
+  the page is reloaded. To turn the button off everywhere, use the option in Settings.
+
+### Fixed
+- The video button could throw `TypeError: … requires 'TrustedHTML' assignment` on sites that enforce
+  Trusted Types (YouTube, Google). It's now built with DOM calls instead of `innerHTML`.
+- After the extension is reloaded or updated, pages that were already open no longer throw errors: the
+  old copy of the button removes itself.
+
 ## 1.4.1 — 2026-11-23
 
 ### Fixed
